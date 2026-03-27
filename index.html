@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Pensamentos de Ouro — Preview</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --pink: #FF6B9D;
+    --pink2: #C44569;
+    --pink3: #A8325E;
+    --blue: #4FACFE;
+    --blue2: #00F2FE;
+    --orange: #F7971E;
+    --orange2: #FFD200;
+    --green: #11998E;
+    --green2: #38EF7D;
+    --purple: #C471F5;
+    --purple2: #FA71CD;
+  }
+
+  body {
+    background: #1a1a2e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ─── phone shell ─────────────────────────────────── */
+  .phone {
+    width: 390px;
+    height: 844px;
+    background: #fff0f5;
+    border-radius: 50px;
+    overflow: hidden;
+    box-shadow: 0 40px 120px rgba(0,0,0,.6), 0 0 0 12px #111, 0 0 0 14px #333;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .phone::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 120px; height: 34px;
+    background: #111;
+    border-radius: 0 0 22px 22px;
+    z-index: 999;
+  }
+
+  .screens { flex: 1; position: relative; overflow: hidden; }
+
+  .screen {
+    position: absolute; inset: 0;
+    overflow-y: auto; scrollbar-width: none;
+    opacity: 0; pointer-events: none;
+    transition: opacity .3s, transform .3s;
+    transform: translateX(30px);
+  }
+  .screen::-webkit-scrollbar { display: none; }
+  .screen.active { opacity: 1; pointer-events: all; transform: translateX(0); }
+  .screen.slide-left { transform: translateX(-30px); }
+
+  /* gradients */
+  .grad-pink  { background: linear-gradient(135deg, #FF6B9D, #C44569); }
+  .grad-blue  { background: linear-gradient(135deg, #4FACFE, #00F2FE); }
+  .grad-gold  { background: linear-gradient(135deg, #F7971E, #FFD200); }
+  .grad-green { background: linear-gradient(135deg, #11998E, #38EF7D); }
+  .grad-purple{ background: linear-gradient(135deg, #A18CD1, #FBC2EB); }
+  .grad-red   { background: linear-gradient(135deg, #FF512F, #DD2476); }
+  .grad-teal  { background: linear-gradient(135deg, #1FA2FF, #12D8FA); }
+  .grad-rose  { background: linear-gradient(135deg, #FA709A, #FEE140); }
+
+  /* status bar */
+  .status-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 50px 24px 0;
+    position: absolute; top: 0; left: 0; right: 0;
+    z-index: 20; pointer-events: none;
+  }
+  .status-bar span { color: rgba(255,255,255,.9); font-size: 13px; font-weight: 600; }
+
+  /* ─── HOME ─────────────────────────────────────────── */
+  #home { background: #FFF8F0; }
+
+  .hero {
+    background: linear-gradient(145deg, #F6B93B, #e58e26, #c0392b);
+    padding: 88px 24px 32px;
+    position: relative; overflow: hidden;
+  }
+  .hero::before, .hero::after {
+    content: ''; position: absolute; border-radius: 50%;
+    background: rgba(255,255,255,.12);
+  }
+  .hero::before { width: 260px; height: 260px; top:-80px; right:-60px; animation: orbFloat1 6s ease-in-out infinite; }
+  .hero::after  { width: 180px; height: 180px; bottom:-50px; left:-40px; animation: orbFloat2 8s ease-in-out infinite; }
+
+  @keyframes orbFloat1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(20px,-20px)} }
+  @keyframes orbFloat2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-15px,15px)} }
+
+  .hero-app-name {
+    color: rgba(255,255,255,.7);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .hero-label {
+    color: rgba(255,255,255,.85);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .hero-text {
+    color: #fff; font-size: 25px; font-weight: 800;
+    line-height: 1.4; letter-spacing: .2px;
+    text-shadow: 0 2px 8px rgba(0,0,0,.15);
+    animation: pulse 4s ease-in-out infinite;
+    position: relative; z-index: 1;
+  }
+  @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.03)} }
+
+  .hero-actions { display: flex; gap: 10px; margin-top: 22px; flex-wrap: wrap; position: relative; z-index: 1; }
+  .btn-ghost {
+    background: rgba(255,255,255,.22);
+    border: 1.5px solid rgba(255,255,255,.5);
+    color: #fff; padding: 10px 18px;
+    border-radius: 50px; font-size: 13px; font-weight: 700;
+    cursor: pointer; transition: all .2s; white-space: nowrap;
+  }
+  .btn-ghost:hover { background: rgba(255,255,255,.35); transform: scale(1.04); }
+  .btn-ghost:active { transform: scale(.97); }
+  .streak-badge {
+    background: rgba(255,255,255,.2); padding: 8px 14px;
+    border-radius: 20px; color: #fff; font-size: 12px; font-weight: 600; align-self: center;
+  }
+
+  .section-title { font-size: 18px; font-weight: 800; color: #2D1B4E; padding: 20px 16px 10px; }
+  .section-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 16px 10px; }
+  .section-header .section-title { padding: 0; }
+  .unlock-link { color: var(--orange); font-size: 12px; font-weight: 700; cursor: pointer; }
+  .unlock-link:hover { text-decoration: underline; }
+
+  .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 12px 8px; }
+
+  .cat-card {
+    border-radius: 20px; padding: 16px; min-height: 110px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    cursor: pointer; transition: transform .15s, box-shadow .15s;
+    position: relative; overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0,0,0,.15);
+  }
+  .cat-card:hover { transform: scale(1.03); box-shadow: 0 10px 28px rgba(0,0,0,.22); }
+  .cat-card:active { transform: scale(.97); }
+
+  .cat-emoji { font-size: 28px; }
+  .cat-name  { color: #fff; font-size: 14px; font-weight: 700; text-shadow: 0 1px 3px rgba(0,0,0,.2); }
+  .cat-count { color: rgba(255,255,255,.8); font-size: 11px; margin-top: 2px; }
+  .pro-badge {
+    position: absolute; top: 8px; right: 8px;
+    background: rgba(255,255,255,.28); color: #fff;
+    font-size: 9px; font-weight: 800; letter-spacing: .8px;
+    padding: 3px 7px; border-radius: 10px;
+  }
+
+  .testimonials {
+    margin: 0 16px 16px; background: #fff;
+    border-radius: 20px; padding: 18px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.06);
+  }
+  .t-title { font-size: 16px; font-weight: 800; color: #2D1B4E; margin-bottom: 14px; }
+  .t-item { padding-bottom: 14px; margin-bottom: 14px; border-bottom: 1px solid #f5ede0; }
+  .t-item:last-child { border: none; margin: 0; padding: 0; }
+  .t-stars { font-size: 12px; margin-bottom: 4px; }
+  .t-text  { font-size: 13px; color: #2D1B4E; line-height: 1.5; font-style: italic; }
+  .t-author{ font-size: 11px; color: #9B7550; margin-top: 4px; font-weight: 600; }
+
+  .cta-banner { margin: 0 16px 30px; border-radius: 20px; overflow: hidden; }
+  .cta-inner { background: linear-gradient(135deg, #F6B93B, #e58e26, #c0392b); padding: 26px 22px; text-align: center; }
+  .cta-title { color: #fff; font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+  .cta-sub   { color: rgba(255,255,255,.88); font-size: 13px; line-height: 1.5; margin-bottom: 18px; }
+  .btn-white {
+    background: #fff; color: #c0392b; font-size: 14px; font-weight: 800;
+    padding: 13px 24px; border-radius: 50px; border: none; cursor: pointer;
+    transition: transform .15s, box-shadow .15s;
+    box-shadow: 0 4px 16px rgba(0,0,0,.15);
+  }
+  .btn-white:hover { transform: scale(1.04); box-shadow: 0 6px 20px rgba(0,0,0,.2); }
+
+  /* ─── CATEGORIES ───────────────────────────────────── */
+  #categories { background: #FFF8F0; }
+  .cats-header { background: linear-gradient(135deg, #F6B93B, #e58e26, #c0392b); padding: 88px 20px 20px; }
+  .cats-header h1 { color: #fff; font-size: 26px; font-weight: 800; margin-bottom: 4px; }
+  .cats-header p  { color: rgba(255,255,255,.8); font-size: 12px; margin-bottom: 14px; }
+  .search-box { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,.2); border-radius: 14px; padding: 10px 14px; }
+  .search-box input { background: none; border: none; outline: none; color: #fff; font-size: 14px; font-weight: 500; flex: 1; }
+  .search-box input::placeholder { color: rgba(255,255,255,.6); }
+  .cats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 14px 12px 30px; }
+
+  /* ─── PLAYER ───────────────────────────────────────── */
+  #player { background: linear-gradient(145deg, #F6B93B, #e58e26, #c0392b); display: flex; flex-direction: column; }
+  .player-bg { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .player-orb { position: absolute; border-radius: 50%; background: rgba(255,255,255,.15); }
+  .player-orb.o1 { width:300px;height:300px;top:-80px;right:-60px; animation:orbFloat1 5s ease-in-out infinite; }
+  .player-orb.o2 { width:200px;height:200px;bottom:80px;left:-50px; animation:orbFloat2 7s ease-in-out infinite; }
+  .player-orb.o3 { width:280px;height:280px;top:50%;left:50%;transform:translate(-50%,-50%);border:1px solid rgba(255,255,255,.15);background:none; animation:pulseRing 3s ease-in-out infinite; }
+  @keyframes pulseRing { 0%,100%{transform:translate(-50%,-50%) scale(1)} 50%{transform:translate(-50%,-50%) scale(1.12)} }
+
+  .player-header { display: flex; justify-content: space-between; align-items: center; padding: 86px 20px 16px; position: relative; z-index: 2; }
+  .blur-btn {
+    width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.22);
+    backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.3);
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;color:#fff;font-size:17px;font-weight:700;transition:all .2s;
+  }
+  .blur-btn:hover { background:rgba(255,255,255,.35);transform:scale(1.08); }
+  .blur-btn:active { transform:scale(.93); }
+
+  .player-cat-info { text-align:center; }
+  .player-cat-info .emoji { font-size:22px; }
+  .player-cat-info .name  { color:rgba(255,255,255,.9);font-size:12px;font-weight:600;letter-spacing:.4px; }
+
+  .player-main { flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 32px;position:relative;z-index:2; }
+  .player-text {
+    color:#fff;font-size:27px;font-weight:800;text-align:center;line-height:1.45;
+    letter-spacing:.2px;text-shadow:0 2px 12px rgba(0,0,0,.15);animation:affFadeIn .5s ease;
+  }
+  @keyframes affFadeIn { from{opacity:0;transform:scale(.94)} to{opacity:1;transform:scale(1)} }
+  .player-counter { color:rgba(255,255,255,.65);font-size:13px;font-weight:600;margin-top:26px;letter-spacing:1px; }
+
+  .timer-bar { padding:0 32px;margin-bottom:14px;position:relative;z-index:2;display:none; }
+  .timer-bar.visible { display:block; }
+  .timer-track { width:100%;height:4px;border-radius:2px;background:rgba(255,255,255,.2);overflow:hidden;margin-bottom:6px; }
+  .timer-fill  { height:100%;background:rgba(255,255,255,.85);border-radius:2px;width:0;transition:width .9s linear; }
+  .timer-text  { color:rgba(255,255,255,.85);font-size:13px;font-weight:700;letter-spacing:1px;text-align:center; }
+
+  .player-controls { display:flex;justify-content:center;align-items:center;gap:12px;padding:0 24px 36px;position:relative;z-index:2; }
+  .ctrl-btn {
+    width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.22);
+    backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.3);
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;font-size:18px;transition:all .15s;
+  }
+  .ctrl-btn:hover  { background:rgba(255,255,255,.35);transform:scale(1.08); }
+  .ctrl-btn:active { transform:scale(.92); }
+  .ctrl-btn.play   { width:70px;height:70px;background:rgba(255,255,255,.3);font-size:26px;box-shadow:0 6px 24px rgba(0,0,0,.2); }
+  .ctrl-btn.play:hover { background:rgba(255,255,255,.42);transform:scale(1.06); }
+
+  /* ─── SETTINGS ─────────────────────────────────────── */
+  #settings { background: #FFF8F0; }
+  .settings-header { background: linear-gradient(135deg, #F6B93B, #e58e26, #c0392b); padding: 88px 20px 24px; }
+  .settings-header h1 { color:#fff;font-size:26px;font-weight:800; }
+  .settings-header .streak { color:rgba(255,255,255,.9);font-size:13px;margin-top:4px;font-weight:600; }
+  .settings-section { padding: 0 16px 20px; }
+  .settings-label { font-size:10px;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;color:#9B7550;margin-bottom:8px;margin-top:20px;padding:0 4px; }
+  .settings-card  { background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06); }
+  .settings-row   { display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid #faebd0; }
+  .settings-row:last-child { border:none; }
+  .settings-row .icon  { font-size:20px;width:28px;text-align:center; }
+  .settings-row .label { flex:1;font-size:14px;font-weight:600;color:#2D1B4E; }
+  .settings-row .chevron { color:#C09060;font-size:20px; }
+
+  .toggle { width:44px;height:26px;border-radius:13px;background:#e0e0e0;position:relative;cursor:pointer;transition:background .25s;flex-shrink:0; }
+  .toggle.on { background:var(--orange); }
+  .toggle::after { content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.2);transition:left .25s; }
+  .toggle.on::after { left:21px; }
+
+  .theme-row { display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding:14px 16px; }
+  .theme-row::-webkit-scrollbar { display:none; }
+  .theme-chip { flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:5px;padding:4px;border-radius:14px;border:3px solid transparent;cursor:pointer;transition:all .2s; }
+  .theme-chip.active { border-color:var(--orange); }
+  .theme-chip:hover { transform:scale(1.05); }
+  .theme-preview { width:60px;height:60px;border-radius:12px; }
+  .theme-name { font-size:10px;font-weight:600;color:#9B7550;text-align:center; }
+
+  .time-grid { display:flex;flex-wrap:wrap;gap:8px;padding:0 16px 16px; }
+  .time-chip { padding:6px 14px;border-radius:20px;border:1.5px solid #fad8b0;font-size:12px;font-weight:600;color:#2D1B4E;cursor:pointer;transition:all .2s; }
+  .time-chip.active { background:var(--orange);border-color:var(--orange);color:#fff; }
+  .time-chip:hover { transform:scale(1.06); }
+
+  /* ─── PREMIUM ──────────────────────────────────────── */
+  #premium { background: #FFF8F0; }
+  .premium-hero {
+    background: linear-gradient(145deg, #F6B93B, #e58e26, #c0392b);
+    padding: 80px 24px 36px; text-align: center; position: relative; overflow: hidden;
+  }
+  .premium-hero::before {
+    content:'';position:absolute;width:300px;height:300px;border-radius:50%;
+    background:rgba(255,255,255,.1);top:-100px;right:-80px;animation:orbFloat1 6s ease-in-out infinite;
+  }
+  .close-btn {
+    position:absolute;top:52px;right:20px;width:34px;height:34px;border-radius:50%;
+    background:rgba(255,255,255,.2);color:#fff;display:flex;align-items:center;
+    justify-content:center;font-size:14px;font-weight:700;cursor:pointer;border:none;
+    transition:all .2s;z-index:5;
+  }
+  .close-btn:hover { background:rgba(255,255,255,.35); }
+
+  .crown-box { width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 14px;position:relative;overflow:hidden; }
+  .shimmer { position:absolute;top:0;left:-100%;width:60px;height:100%;background:rgba(255,255,255,.3);transform:skewX(-20deg);animation:shimmer 2.5s ease-in-out infinite; }
+  @keyframes shimmer { 0%{left:-100%} 100%{left:200%} }
+
+  .premium-title { color:#fff;font-size:28px;font-weight:900;line-height:1.3; }
+  .premium-sub   { color:rgba(255,255,255,.88);font-size:14px;margin-top:8px;line-height:1.5; }
+
+  .perks { padding:18px 20px 0; }
+  .perks-title { font-size:17px;font-weight:800;color:#2D1B4E;margin-bottom:14px; }
+  .perk-item { display:flex;align-items:center;gap:13px;padding:11px 0;border-bottom:1px solid #faebd0; }
+  .perk-item:last-child { border:none; }
+  .perk-icon-box { width:38px;height:38px;border-radius:12px;background:#F6B93B22;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0; }
+  .perk-info { flex:1; }
+  .perk-title { font-size:14px;font-weight:700;color:#2D1B4E; }
+  .perk-desc  { font-size:11px;color:#9B7550;margin-top:1px; }
+  .perk-check { color:#11998E;font-size:16px;font-weight:800; }
+
+  .plans-box { margin:16px 16px 0;background:#fff;border-radius:24px;padding:20px;box-shadow:0 4px 20px rgba(0,0,0,.08);margin-bottom:40px; }
+  .plans-title { font-size:17px;font-weight:800;color:#2D1B4E;margin-bottom:14px; }
+  .plan-card { display:flex;align-items:center;border:2px solid #fad8b0;border-radius:16px;padding:14px;gap:12px;margin-bottom:10px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden; }
+  .plan-card:hover { transform:scale(1.01); }
+  .plan-card.selected { border-color:var(--orange);background:#F7971E0D; }
+
+  .popular-badge { position:absolute;top:0;right:0;background:linear-gradient(135deg,#F6B93B,#e58e26);color:#fff;font-size:8px;font-weight:800;letter-spacing:.8px;padding:4px 10px;border-bottom-left-radius:12px; }
+  .radio-outer { width:20px;height:20px;border-radius:50%;border:2px solid #fad8b0;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:border-color .2s; }
+  .plan-card.selected .radio-outer { border-color:var(--orange); }
+  .radio-inner { width:10px;height:10px;border-radius:50%;background:var(--orange);display:none; }
+  .plan-card.selected .radio-inner { display:block; }
+
+  .plan-info { flex:1; }
+  .plan-name  { font-size:15px;font-weight:700;color:#2D1B4E; }
+  .plan-price { font-size:19px;font-weight:800;color:var(--orange);margin:2px 0; }
+  .plan-sub   { font-size:11px;color:#9B7550; }
+  .lifetime-badge { background:#F7971E20;color:var(--orange);font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px; }
+
+  .purchase-btn {
+    background:linear-gradient(135deg,#F6B93B,#e58e26);color:#fff;border:none;border-radius:50px;
+    padding:16px;font-size:15px;font-weight:800;letter-spacing:.2px;width:100%;cursor:pointer;
+    margin-top:6px;transition:all .2s;box-shadow:0 6px 20px rgba(246,185,59,.4);
+  }
+  .purchase-btn:hover { transform:scale(1.02);box-shadow:0 8px 26px rgba(246,185,59,.5); }
+  .purchase-btn:active { transform:scale(.98); }
+
+  .restore-link { display:block;text-align:center;padding:12px;color:#9B7550;font-size:12px;cursor:pointer;text-decoration:underline; }
+  .legal { font-size:9.5px;color:#9B7550;text-align:center;line-height:1.5;padding:0 8px 30px; }
+
+  /* ─── BOTTOM TAB BAR ───────────────────────────────── */
+  .tab-bar { display:flex;background:rgba(255,255,255,.94);backdrop-filter:blur(16px);border-top:1px solid #faebd0;height:70px;flex-shrink:0;z-index:100; }
+  .tab-btn { flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;transition:all .15s;border:none;background:none;padding:8px 0 4px; }
+  .tab-btn:hover .tab-icon { transform:scale(1.15); }
+  .tab-btn:active { transform:scale(.94); }
+  .tab-icon  { font-size:22px;transition:transform .2s; }
+  .tab-label { font-size:10px;font-weight:600;color:#C0A880;transition:color .2s; }
+  .tab-btn.active .tab-label { color:var(--orange); }
+  .tab-dot   { width:4px;height:4px;border-radius:50%;background:var(--orange);margin-top:-1px;opacity:0;transition:opacity .2s; }
+  .tab-btn.active .tab-dot { opacity:1; }
+
+  /* ─── TOAST ────────────────────────────────────────── */
+  .notification-toast {
+    position:absolute;top:56px;left:16px;right:16px;background:rgba(30,20,10,.92);
+    backdrop-filter:blur(12px);color:#fff;padding:12px 16px;border-radius:14px;
+    font-size:13px;font-weight:600;z-index:500;opacity:0;transform:translateY(-8px);
+    transition:all .3s;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.3);
+  }
+  .notification-toast.show { opacity:1;transform:translateY(0); }
+
+  /* animations */
+  .fade-in { animation: fadeInUp .4s ease both; }
+  @keyframes fadeInUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes speakPulse { 0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.5)} 50%{box-shadow:0 0 0 12px rgba(255,255,255,0)} }
+  .speaking { animation:speakPulse 1.2s ease-in-out infinite; }
+</style>
+</head>
+<body>
+<div class="phone" id="app">
+
+  <div class="screens">
+
+    <!-- ══════════════ HOME ══════════════ -->
+    <div class="screen active" id="home">
+      <div class="status-bar"><span>9:41</span><span>●●● 100%</span></div>
+      <div class="hero">
+        <p class="hero-app-name">✦ Pensamentos de Ouro</p>
+        <p class="hero-label">💛 Seu Pensamento do Dia</p>
+        <p class="hero-text" id="daily-aff">"Sou digna(o) de uma vida que me faz bem."</p>
+        <div class="hero-actions">
+          <button class="btn-ghost" onclick="novoPensamento()">✦ Novo Pensamento</button>
+          <div class="streak-badge">🔥 7 dias seguidos</div>
+        </div>
+      </div>
+
+      <div class="section-title">Categorias Gratuitas</div>
+      <div class="cat-grid" id="free-cats"></div>
+
+      <div class="section-header">
+        <div class="section-title">Categorias Premium</div>
+        <span class="unlock-link" onclick="showTab('premium')">Desbloquear Tudo →</span>
+      </div>
+      <div class="cat-grid" id="premium-cats"></div>
+
+      <div class="testimonials">
+        <p class="t-title">💬 O que dizem sobre nós</p>
+        <div class="t-item">
+          <div class="t-stars">⭐⭐⭐⭐⭐</div>
+          <p class="t-text">"Esse app mudou completamente as minhas manhãs. Me sinto muito mais positiva começando o dia com afirmações."</p>
+          <p class="t-author">— Maria S., São Paulo</p>
+        </div>
+        <div class="t-item">
+          <div class="t-stars">⭐⭐⭐⭐⭐</div>
+          <p class="t-text">"Os temas premium são lindos e os pensamentos são muito autênticos. Vale cada centavo!"</p>
+          <p class="t-author">— James T., Rio de Janeiro</p>
+        </div>
+        <div class="t-item">
+          <div class="t-stars">⭐⭐⭐⭐⭐</div>
+          <p class="t-text">"60 dias seguidos usando. Minha autoconfiança cresceu de verdade. Recomendo muito!"</p>
+          <p class="t-author">— Ana P., Belo Horizonte</p>
+        </div>
+      </div>
+
+      <div class="cta-banner">
+        <div class="cta-inner">
+          <p class="cta-title">Desperte Todo o Seu Potencial</p>
+          <p class="cta-sub">600+ afirmações · 20 categorias · Sem anúncios · Temas exclusivos</p>
+          <button class="btn-white" onclick="showTab('premium')">Começar Premium — R$19,99/ano</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════ CATEGORIES ══════════════ -->
+    <div class="screen" id="categories">
+      <div class="status-bar"><span>9:41</span><span>●●● 100%</span></div>
+      <div class="cats-header">
+        <h1>Todas as Categorias</h1>
+        <p>20 coleções de afirmações</p>
+        <div class="search-box">
+          <span>🔍</span>
+          <input type="text" placeholder="Buscar categorias..." oninput="filterCats(this.value)"/>
+        </div>
+      </div>
+      <div class="cats-grid" id="all-cats"></div>
+    </div>
+
+    <!-- ══════════════ PLAYER ══════════════ -->
+    <div class="screen" id="player">
+      <div class="status-bar"><span>9:41</span><span>●●● 100%</span></div>
+      <div class="player-bg">
+        <div class="player-orb o1"></div>
+        <div class="player-orb o2"></div>
+        <div class="player-orb o3"></div>
+      </div>
+      <div class="player-header">
+        <div class="blur-btn" onclick="closePlayer()">←</div>
+        <div class="player-cat-info">
+          <div class="emoji" id="player-cat-emoji">💗</div>
+          <div class="name" id="player-cat-name">Autoamor</div>
+        </div>
+        <div class="blur-btn" onclick="shareAff()">↑</div>
+      </div>
+      <div class="player-main">
+        <p class="player-text" id="player-text">"Sou digna(o) de amor exatamente como sou."</p>
+        <p class="player-counter" id="player-counter">1 / 10</p>
+      </div>
+      <div class="timer-bar" id="timer-bar">
+        <div class="timer-track"><div class="timer-fill" id="timer-fill"></div></div>
+        <div class="timer-text" id="timer-text">1:00</div>
+      </div>
+      <div class="player-controls">
+        <div class="ctrl-btn" id="fav-btn" onclick="toggleFav()">🤍</div>
+        <div class="ctrl-btn" onclick="prevAff()">⏮</div>
+        <div class="ctrl-btn play" id="play-btn" onclick="togglePlay()">▶</div>
+        <div class="ctrl-btn" onclick="nextAff()">⏭</div>
+        <div class="ctrl-btn" id="timer-btn" onclick="toggleTimer()">⏱</div>
+      </div>
+    </div>
+
+    <!-- ══════════════ SETTINGS ══════════════ -->
+    <div class="screen" id="settings">
+      <div class="status-bar"><span>9:41</span><span>●●● 100%</span></div>
+      <div class="settings-header">
+        <h1>Configurações</h1>
+        <p class="streak">🔥 7 dias seguidos — continue assim!</p>
+      </div>
+      <div class="settings-section">
+
+        <div class="settings-label">Aparência</div>
+        <div class="settings-card">
+          <div style="padding:4px 0 0">
+            <p style="padding:12px 16px 6px;font-size:15px;font-weight:700;color:#2D1B4E">Escolher Tema</p>
+            <div class="theme-row" id="theme-row"></div>
+          </div>
+        </div>
+
+        <div class="settings-label">Lembretes</div>
+        <div class="settings-card">
+          <div class="settings-row">
+            <span class="icon">🔔</span>
+            <span class="label">Lembretes Diários</span>
+            <div class="toggle on" id="notif-toggle" onclick="toggleNotif()"></div>
+          </div>
+          <div class="time-grid" id="time-grid"></div>
+        </div>
+
+        <div class="settings-label">Premium</div>
+        <div class="settings-card">
+          <div class="settings-row" onclick="showTab('premium')" style="cursor:pointer">
+            <span class="icon">✨</span>
+            <span class="label">Upgrade para Premium</span>
+            <span class="chevron" style="color:var(--orange)">›</span>
+          </div>
+        </div>
+
+        <div class="settings-label">Sobre</div>
+        <div class="settings-card">
+          <div class="settings-row" onclick="toast('Blog em breve! 📖')" style="cursor:pointer">
+            <span class="icon">📖</span><span class="label">Nosso Blog</span><span class="chevron">›</span>
+          </div>
+          <div class="settings-row" onclick="toast('Obrigado! ⭐ Avaliação abre a App Store.')" style="cursor:pointer">
+            <span class="icon">⭐</span><span class="label">Avaliar o App</span><span class="chevron">›</span>
+          </div>
+          <div class="settings-row" onclick="toast('Link de compartilhamento em breve! 🔗')" style="cursor:pointer">
+            <span class="icon">📤</span><span class="label">Compartilhar com Amigos</span><span class="chevron">›</span>
+          </div>
+          <div class="settings-row">
+            <span class="icon">ℹ️</span><span class="label">Versão 1.0.0</span>
+            <span style="font-size:11px;color:#9B7550">Pensamentos de Ouro</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════ PREMIUM ══════════════ -->
+    <div class="screen" id="premium">
+      <div class="status-bar"><span>9:41</span><span>●●● 100%</span></div>
+      <div class="premium-hero">
+        <button class="close-btn" onclick="closePremium()">✕</button>
+        <div class="crown-box"><span>👑</span><div class="shimmer"></div></div>
+        <p class="premium-title">Pensamentos de Ouro<br>Premium</p>
+        <p class="premium-sub">Transforme sua mentalidade.<br>Desperte todo o seu potencial.</p>
+      </div>
+
+      <div class="perks">
+        <p class="perks-title">Tudo incluído:</p>
+        <div id="perks-list"></div>
+      </div>
+
+      <div class="plans-box">
+        <p class="plans-title">Escolha seu plano</p>
+
+        <div class="plan-card selected" id="plan-yearly" onclick="selectPlan('yearly')">
+          <div class="popular-badge">MAIS POPULAR</div>
+          <div class="radio-outer"><div class="radio-inner"></div></div>
+          <div class="plan-info">
+            <div class="plan-name">Plano Anual</div>
+            <div class="plan-price">R$ 19,99 / ano</div>
+            <div class="plan-sub">≈ R$ 1,67/mês · Cancele quando quiser</div>
+          </div>
+        </div>
+
+        <div class="plan-card" id="plan-lifetime" onclick="selectPlan('lifetime')">
+          <div class="radio-outer"><div class="radio-inner"></div></div>
+          <div class="plan-info">
+            <div class="plan-name">Acesso Vitalício</div>
+            <div class="plan-price">R$ 99,00 único</div>
+            <div class="plan-sub">Pague uma vez, tenha para sempre · Melhor custo-benefício</div>
+          </div>
+          <div class="lifetime-badge">♾ Para sempre</div>
+        </div>
+
+        <button class="purchase-btn" id="purchase-btn" onclick="handlePurchase()">✦ Começar Premium — R$ 19,99/ano</button>
+        <a class="restore-link" onclick="toast('Verificando compras anteriores…')">Restaurar compras anteriores</a>
+        <p class="legal">O pagamento é debitado da sua conta. A assinatura é renovada automaticamente, salvo cancelamento com pelo menos 24h de antecedência. Preços em BRL.</p>
+      </div>
+    </div>
+
+  </div><!-- /screens -->
+
+  <!-- Tab Bar -->
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="showTab('home')" id="tab-home">
+      <div class="tab-icon">🏠</div>
+      <div class="tab-label">Início</div>
+      <div class="tab-dot"></div>
+    </button>
+    <button class="tab-btn" onclick="showTab('categories')" id="tab-categories">
+      <div class="tab-icon">✦</div>
+      <div class="tab-label">Categorias</div>
+      <div class="tab-dot"></div>
+    </button>
+    <button class="tab-btn" onclick="showTab('settings')" id="tab-settings">
+      <div class="tab-icon">⚙️</div>
+      <div class="tab-label">Config.</div>
+      <div class="tab-dot"></div>
+    </button>
+  </div>
+
+  <div class="notification-toast" id="toast"></div>
+</div>
+
+<script>
+// ── Dados ─────────────────────────────────────────────────────────────────
+const CATS = [
+  { id:'autoamor',       name:'Autoamor',          emoji:'💗', grad:'grad-pink',   premium:false, count:30 },
+  { id:'confianca',      name:'Confiança',          emoji:'⚡', grad:'grad-gold',   premium:false, count:30 },
+  { id:'relacionamentos',name:'Relacionamentos',    emoji:'🌹', grad:'grad-rose',   premium:false, count:30 },
+  { id:'paz-interior',   name:'Paz Interior',       emoji:'🕊️', grad:'grad-blue',  premium:false, count:30 },
+  { id:'crescimento',    name:'Crescimento',        emoji:'🌱', grad:'grad-green',  premium:false, count:30 },
+  { id:'prosperidade',   name:'Prosperidade',       emoji:'✨', grad:'grad-gold',   premium:false, count:30 },
+  { id:'saude',          name:'Saúde & Corpo',      emoji:'🌿', grad:'grad-green',  premium:true,  count:30 },
+  { id:'gratidao',       name:'Gratidão',           emoji:'🙏', grad:'grad-purple', premium:true,  count:30 },
+  { id:'abundancia',     name:'Abundância',         emoji:'🌊', grad:'grad-blue',   premium:true,  count:30 },
+  { id:'criatividade',   name:'Criatividade',       emoji:'🎨', grad:'grad-rose',   premium:true,  count:30 },
+  { id:'coragem',        name:'Coragem',            emoji:'🦁', grad:'grad-red',    premium:true,  count:30 },
+  { id:'atencao-plena',  name:'Atenção Plena',      emoji:'🧘', grad:'grad-purple', premium:true,  count:30 },
+  { id:'sucesso',        name:'Sucesso',            emoji:'🏆', grad:'grad-gold',   premium:true,  count:30 },
+  { id:'alegria',        name:'Alegria & Felicidade',emoji:'☀️',grad:'grad-rose',  premium:true,  count:30 },
+  { id:'perdao',         name:'Perdão',             emoji:'🌸', grad:'grad-pink',   premium:true,  count:30 },
+  { id:'forca',          name:'Força',              emoji:'💪', grad:'grad-red',    premium:true,  count:30 },
+  { id:'foco',           name:'Foco',               emoji:'🎯', grad:'grad-blue',   premium:true,  count:30 },
+  { id:'autenticidade',  name:'Autenticidade',      emoji:'🦋', grad:'grad-purple', premium:true,  count:30 },
+  { id:'espiritualidade',name:'Espiritualidade',    emoji:'🌙', grad:'grad-blue',   premium:true,  count:30 },
+  { id:'carreira',       name:'Carreira & Propósito',emoji:'🚀',grad:'grad-teal',  premium:true,  count:30 },
+];
+
+const AFFS = {
+  'autoamor': [
+    'Sou digna(o) de amor exatamente como sou.',
+    'Sou suficiente exatamente como estou agora.',
+    'Mereço gentileza, especialmente de mim mesmo(a).',
+    'Meu corpo é um presente e o trato com amor.',
+    'Sou bela(o) por dentro e por fora.',
+    'Libero a necessidade de ser perfeita(o).',
+    'Sou digna(o) de uma vida que me faz bem.',
+    'Escolho amar e aceitar a mim mesmo(a) incondicionalmente.',
+    'Minhas necessidades e desejos são válidos e importantes.',
+    'Sou minha(meu) melhor amiga(amigo).',
+  ],
+  'confianca': [
+    'Sou confiante, capaz e forte.',
+    'Acredito na minha capacidade de ter sucesso.',
+    'Entro em qualquer ambiente com confiança e graça.',
+    'Confio plenamente em mim mesmo(a).',
+    'Minha voz importa e merece ser ouvida.',
+    'Sou digna(o) das oportunidades que chegam até mim.',
+    'Enfrento desafios com coragem e calma.',
+    'Me orgulho das minhas conquistas, grandes e pequenas.',
+    'Falo minha verdade com clareza e confiança.',
+    'Sou poderosa(o) além do que imagino.',
+  ],
+  'relacionamentos': [
+    'Atraio relacionamentos amorosos, saudáveis e realizadores.',
+    'Dou e recebo amor livre e alegremente.',
+    'Meus relacionamentos são construídos em confiança e respeito mútuo.',
+    'Sou digna(o) de conexões profundas e significativas.',
+    'Comunico minhas necessidades com clareza e amor.',
+    'O amor flui para mim e por mim sem esforço.',
+    'Sou um ímã para pessoas gentis e solidárias.',
+    'Meu coração está aberto para dar e receber amor.',
+    'Perdoo os outros e me liberto do ressentimento.',
+    'Estou cercada(o) de pessoas que me elevam.',
+  ],
+  'paz-interior': [
+    'Estou em paz com quem sou e onde estou.',
+    'Libero toda ansiedade e acolho a calma.',
+    'Minha mente é pacífica e meu coração está sereno.',
+    'Escolho a paz em vez da preocupação a cada momento.',
+    'Estou centrada(o), enraizada(o) e tranquila(o).',
+    'A tranquilidade é meu estado natural de ser.',
+    'Libero o que não posso controlar.',
+    'A paz me envolve como uma onda suave.',
+    'Respiro a calma e expiro a tensão.',
+    'Meu mundo interior é sereno e imperturbável.',
+  ],
+  'crescimento': [
+    'Estou evoluindo constantemente para uma versão melhor de mim.',
+    'Cada desafio me torna mais forte e mais sábio(a).',
+    'Abraço a mudança como parte natural do meu crescimento.',
+    'Estou aberta(o) a aprender algo novo todos os dias.',
+    'Meu potencial é ilimitado e está sempre se expandindo.',
+    'Saio da minha zona de conforto com coragem.',
+    'Transformo cada revés em trampolim para o sucesso.',
+    'Estou comprometida(o) com minha jornada de crescimento pessoal.',
+    'Crescer é natural e seguro para mim.',
+    'Celebro cada pequeno passo à frente.',
+  ],
+  'prosperidade': [
+    'Sou um ímã para riqueza e abundância.',
+    'O dinheiro flui para mim com facilidade e frequência.',
+    'Sou digna(o) de sucesso e liberdade financeira.',
+    'Libero todas as crenças limitantes sobre dinheiro.',
+    'Crio múltiplas fontes de renda sem esforço.',
+    'A prosperidade é meu estado natural de ser.',
+    'Estou aberta(o) a receber riqueza de formas esperadas e inesperadas.',
+    'Minha conta bancária cresce de forma constante todos os dias.',
+    'Tomo decisões financeiras sábias e lucrativas.',
+    'Sou grata(o) pela abundância que já existe na minha vida.',
+  ],
+};
+
+const FALLBACK = [
+  'Irradio amor, confiança e energia positiva.',
+  'Hoje escolho ser a melhor versão de mim mesmo(a).',
+  'Tudo o que preciso já está dentro de mim.',
+  'Estou exatamente onde preciso estar.',
+  'Meu potencial é ilimitado.',
+  'Coisas boas fluem para mim naturalmente.',
+  'Abraço este dia com um coração aberto e grato.',
+  'Sou forte, capaz e pronto(a) para qualquer coisa.',
+  'Escolho paz, alegria e abundância hoje.',
+  'Sou amada(o), apoiada(o) e nunca estou só.',
+];
+
+const PENSAMENTOS_DO_DIA = [
+  '"Sou digna(o) de uma vida que me faz bem."',
+  '"Hoje escolho ser a melhor versão de mim mesmo(a)."',
+  '"Tudo o que preciso já está dentro de mim."',
+  '"Estou exatamente onde preciso estar."',
+  '"Meu potencial é ilimitado."',
+  '"Irradio amor, confiança e energia positiva."',
+  '"Coisas boas fluem para mim naturalmente e de forma constante."',
+  '"Sou forte, capaz e pronto(a) para qualquer desafio."',
+  '"Sou amada(o), apoiada(o) e nunca estou só."',
+  '"Abraço este dia com um coração aberto e grato."',
+  '"Eu mereço todo o bem que a vida tem a oferecer."',
+  '"Hoje é mais um passo em direção ao meu melhor."',
+];
+
+const THEMES = [
+  { id:'ouro',    name:'✨ Ouro Suave',    grad:'linear-gradient(135deg,#F6B93B,#e58e26)' },
+  { id:'rosa',    name:'🌸 Rosa Pastel',   grad:'linear-gradient(135deg,#FF6B9D,#C44569)' },
+  { id:'cristal', name:'💎 Céu Cristal',   grad:'linear-gradient(135deg,#4FACFE,#00F2FE)' },
+  { id:'natureza',name:'🌿 Natureza Zen',  grad:'linear-gradient(135deg,#11998E,#38EF7D)' },
+  { id:'noite',   name:'🌙 Noite Estrelada',grad:'linear-gradient(135deg,#C471F5,#FA71CD)'},
+  { id:'pordosol',name:'🌇 Pôr do Sol',    grad:'linear-gradient(135deg,#FF512F,#DD2476)' },
+  { id:'lavanda', name:'💜 Lavanda',        grad:'linear-gradient(135deg,#A18CD1,#FBC2EB)' },
+  { id:'oceano',  name:'🌊 Oceano Profundo',grad:'linear-gradient(135deg,#1FA2FF,#12D8FA)'},
+  { id:'rose',    name:'🌹 Ouro Rosé',      grad:'linear-gradient(135deg,#E8A09A,#D4756F)' },
+  { id:'aurora',  name:'🌅 Aurora',         grad:'linear-gradient(135deg,#FA709A,#FEE140)' },
+];
+
+const TIME_OPTIONS = ['06:00','07:00','08:00','09:00','12:00','13:00','15:00','18:00','20:00','21:00','22:00'];
+
+const PERKS = [
+  { icon:'🌸', title:'20 Categorias Premium',  desc:'Mais de 600 afirmações curadas desbloqueadas' },
+  { icon:'🎨', title:'10 Temas Exclusivos',     desc:'Noite Estrelada, Lavanda e muito mais' },
+  { icon:'🚫', title:'Sem Anúncios, Jamais',   desc:'Experiência tranquila e sem distrações' },
+  { icon:'⏱', title:'Timer de Meditação 1 min',desc:'Timer de foco para aprofundar suas afirmações' },
+  { icon:'🔔', title:'3 Lembretes Diários',     desc:'Personalize seu horário de lembretes' },
+  { icon:'❤️', title:'Favoritos Ilimitados',    desc:'Salve e revisite suas melhores afirmações' },
+  { icon:'📱', title:'Widget na Tela Inicial',  desc:'Pensamento rotativo direto na tela inicial' },
+  { icon:'🎙', title:'Narração por Voz',        desc:'Ouça as afirmações sendo lidas em voz alta' },
+];
+
+// ── Estado ────────────────────────────────────────────────────────────────
+let currentTab = 'home';
+let prevTab = 'home';
+let playerCat = null;
+let playerIndex = 0;
+let isFav = false;
+let isPlaying = false;
+let timerActive = false;
+let timerInterval = null;
+let timerLeft = 60;
+let selectedPlan = 'yearly';
+let notifEnabled = true;
+let activeTheme = 'ouro';
+let selectedTimes = ['08:00','13:00','20:00'];
+let affIdx = 0;
+
+// ── Init ──────────────────────────────────────────────────────────────────
+function init() {
+  renderFreeCats();
+  renderPremiumPreview();
+  renderAllCats();
+  renderThemes();
+  renderTimePicker();
+  renderPerks();
+}
+
+const GRAD_MAP = {
+  'grad-pink':  'linear-gradient(135deg,#FF6B9D,#C44569)',
+  'grad-gold':  'linear-gradient(135deg,#F7971E,#FFD200)',
+  'grad-rose':  'linear-gradient(135deg,#FA709A,#FEE140)',
+  'grad-blue':  'linear-gradient(135deg,#4FACFE,#00F2FE)',
+  'grad-green': 'linear-gradient(135deg,#11998E,#38EF7D)',
+  'grad-purple':'linear-gradient(135deg,#A18CD1,#FBC2EB)',
+  'grad-red':   'linear-gradient(135deg,#FF512F,#DD2476)',
+  'grad-teal':  'linear-gradient(135deg,#1FA2FF,#12D8FA)',
+};
+
+function catCard(cat, locked) {
+  const g = locked ? 'linear-gradient(135deg,#bbb,#888)' : (GRAD_MAP[cat.grad] || GRAD_MAP['grad-pink']);
+  return `
+    <div class="cat-card fade-in" style="background:${g}" onclick="${locked ? "showTab('premium')" : `openPlayer('${cat.id}')`}">
+      <div class="cat-emoji">${locked ? '🔒' : cat.emoji}</div>
+      <div>
+        <div class="cat-name">${cat.name}</div>
+        <div class="cat-count">${cat.count} afirmações</div>
+      </div>
+      ${locked ? '<div class="pro-badge">PRO</div>' : ''}
+    </div>`;
+}
+
+function renderFreeCats()      { document.getElementById('free-cats').innerHTML    = CATS.filter(c=>!c.premium).map(c=>catCard(c,false)).join(''); }
+function renderPremiumPreview(){ document.getElementById('premium-cats').innerHTML = CATS.filter(c=>c.premium).slice(0,6).map(c=>catCard(c,true)).join(''); }
+function renderAllCats(q='') {
+  const f = q ? CATS.filter(c=>c.name.toLowerCase().includes(q.toLowerCase())) : CATS;
+  document.getElementById('all-cats').innerHTML = f.map(c=>catCard(c,c.premium)).join('') ||
+    `<div style="grid-column:span 2;text-align:center;padding:40px;color:#9B7550">
+      <div style="font-size:48px;margin-bottom:10px">🔍</div>
+      <p>Nenhuma categoria encontrada para "${q}"</p></div>`;
+}
+function filterCats(q) { renderAllCats(q); }
+
+function renderThemes() {
+  document.getElementById('theme-row').innerHTML = THEMES.map(t=>`
+    <div class="theme-chip ${t.id===activeTheme?'active':''}" onclick="setTheme('${t.id}')">
+      <div class="theme-preview" style="background:${t.grad}"></div>
+      <div class="theme-name">${t.name}</div>
+    </div>`).join('');
+}
+
+function renderTimePicker() {
+  document.getElementById('time-grid').innerHTML = TIME_OPTIONS.map(t=>`
+    <div class="time-chip ${selectedTimes.includes(t)?'active':''}" onclick="toggleTime('${t}')">${t}</div>`).join('');
+}
+
+function renderPerks() {
+  document.getElementById('perks-list').innerHTML = PERKS.map(p=>`
+    <div class="perk-item">
+      <div class="perk-icon-box">${p.icon}</div>
+      <div class="perk-info"><div class="perk-title">${p.title}</div><div class="perk-desc">${p.desc}</div></div>
+      <div class="perk-check">✓</div>
+    </div>`).join('');
+}
+
+// ── Navegação ─────────────────────────────────────────────────────────────
+function showTab(tab) {
+  const prev = document.getElementById(currentTab);
+  const next = document.getElementById(tab);
+  if (!next) return;
+  prev.classList.remove('active'); prev.classList.add('slide-left');
+  setTimeout(() => prev.classList.remove('slide-left'), 300);
+  next.classList.add('active');
+  currentTab = tab;
+  ['home','categories','settings'].forEach(t => {
+    document.getElementById('tab-'+t)?.classList.toggle('active', t===tab);
+  });
+  next.scrollTop = 0;
+}
+
+function openPlayer(catId) {
+  const cat = CATS.find(c=>c.id===catId);
+  if (!cat) return;
+  playerCat = cat; playerIndex = 0; isFav = false; isPlaying = false;
+  stopTimer();
+  const PLAYER_GRADS = {
+    'grad-pink':  ['#FF6B9D','#C44569','#A8325E'],
+    'grad-gold':  ['#F7971E','#FDA085','#FFD200'],
+    'grad-rose':  ['#FA709A','#FEE140','#F7971E'],
+    'grad-blue':  ['#4FACFE','#00F2FE','#0082CA'],
+    'grad-green': ['#11998E','#38EF7D','#05B89A'],
+    'grad-purple':['#A18CD1','#FBC2EB','#7B5EA7'],
+    'grad-red':   ['#FF512F','#DD2476','#A0113F'],
+    'grad-teal':  ['#1FA2FF','#12D8FA','#0A6EBD'],
+  };
+  const c = PLAYER_GRADS[cat.grad] || PLAYER_GRADS['grad-pink'];
+  document.getElementById('player').style.background = `linear-gradient(145deg,${c[0]},${c[1]},${c[2]})`;
+  document.getElementById('player-cat-emoji').textContent = cat.emoji;
+  document.getElementById('player-cat-name').textContent  = cat.name;
+  document.getElementById('fav-btn').textContent  = '🤍';
+  document.getElementById('play-btn').textContent = '▶';
+  document.getElementById('play-btn').classList.remove('speaking');
+  updatePlayerText();
+  prevTab = currentTab;
+  showTab('player');
+}
+
+function closePlayer() {
+  showTab(prevTab === 'player' ? 'home' : prevTab);
+  stopTimer();
+  if (isPlaying) { window.speechSynthesis?.cancel(); isPlaying = false; }
+}
+
+function getAff(cat, i) {
+  const arr = AFFS[cat.id];
+  return arr ? arr[i % arr.length] : FALLBACK[i % FALLBACK.length];
+}
+
+function updatePlayerText() {
+  const aff = getAff(playerCat, playerIndex);
+  const el = document.getElementById('player-text');
+  el.style.opacity = '0'; el.style.transform = 'scale(.93)';
+  setTimeout(() => {
+    el.textContent = '"' + aff + '"';
+    el.style.transition = 'opacity .35s, transform .35s';
+    el.style.opacity = '1'; el.style.transform = 'scale(1)';
+    const total = AFFS[playerCat.id]?.length || 10;
+    document.getElementById('player-counter').textContent = `${(playerIndex % total)+1} / ${total}`;
+  }, 160);
+}
+
+function nextAff() { playerIndex=(playerIndex+1)%(AFFS[playerCat.id]?.length||10); updatePlayerText(); if(isPlaying) speakCurrentAff(); }
+function prevAff() { const l=AFFS[playerCat.id]?.length||10; playerIndex=(playerIndex-1+l)%l; updatePlayerText(); if(isPlaying) speakCurrentAff(); }
+
+function toggleFav() {
+  isFav = !isFav;
+  document.getElementById('fav-btn').textContent = isFav ? '❤️' : '🤍';
+  toast(isFav ? '❤️ Salvo nos favoritos!' : '🤍 Removido dos favoritos');
+}
+
+function speakCurrentAff() {
+  if (!('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(getAff(playerCat, playerIndex));
+  utter.lang = 'pt-BR'; utter.rate = 0.85; utter.pitch = 1.1;
+  utter.onend = () => { isPlaying=false; document.getElementById('play-btn').textContent='▶'; document.getElementById('play-btn').classList.remove('speaking'); };
+  window.speechSynthesis.speak(utter);
+}
+
+function togglePlay() {
+  if (isPlaying) {
+    window.speechSynthesis?.cancel();
+    isPlaying = false;
+    document.getElementById('play-btn').textContent = '▶';
+    document.getElementById('play-btn').classList.remove('speaking');
+  } else {
+    isPlaying = true;
+    document.getElementById('play-btn').textContent = '⏸';
+    document.getElementById('play-btn').classList.add('speaking');
+    speakCurrentAff();
+    if (!('speechSynthesis' in window)) toast('🎙 Voz não disponível neste navegador');
+  }
+}
+
+function toggleTimer() {
+  if (timerActive) { stopTimer(); return; }
+  timerActive = true; timerLeft = 60;
+  const bar = document.getElementById('timer-bar');
+  bar.classList.add('visible');
+  const fill = document.getElementById('timer-fill');
+  document.getElementById('timer-text').textContent = '1:00';
+  fill.style.width = '0%';
+  setTimeout(() => { fill.style.width='100%'; fill.style.transition=`width 60s linear`; }, 50);
+  document.getElementById('timer-btn').textContent = '⏹';
+  timerInterval = setInterval(() => {
+    timerLeft--;
+    const m = Math.floor(timerLeft/60), s = String(timerLeft%60).padStart(2,'0');
+    document.getElementById('timer-text').textContent = `${m}:${s}`;
+    if (timerLeft <= 0) { stopTimer(); toast('✅ Sessão de 1 minuto concluída!'); }
+  }, 1000);
+}
+
+function stopTimer() {
+  timerActive = false; clearInterval(timerInterval);
+  document.getElementById('timer-bar')?.classList.remove('visible');
+  document.getElementById('timer-btn').textContent = '⏱';
+  const fill = document.getElementById('timer-fill');
+  if (fill) { fill.style.transition='none'; fill.style.width='0%'; }
+}
+
+// ── Home ──────────────────────────────────────────────────────────────────
+function novoPensamento() {
+  affIdx = (affIdx+1) % PENSAMENTOS_DO_DIA.length;
+  const el = document.getElementById('daily-aff');
+  el.style.opacity='0'; el.style.transform='scale(.95)'; el.style.transition='opacity .2s,transform .2s';
+  setTimeout(() => { el.textContent=PENSAMENTOS_DO_DIA[affIdx]; el.style.opacity='1'; el.style.transform='scale(1)'; }, 220);
+}
+
+// ── Settings ──────────────────────────────────────────────────────────────
+function setTheme(id) {
+  activeTheme = id; renderThemes();
+  const t = THEMES.find(x=>x.id===id); if (!t) return;
+  const g = t.grad;
+  document.querySelectorAll('.hero,.cats-header,.settings-header,.premium-hero').forEach(el => { el.style.background=g; });
+  toast(`🎨 Tema alterado para ${t.name}`);
+}
+
+function toggleNotif() {
+  notifEnabled = !notifEnabled;
+  document.getElementById('notif-toggle').classList.toggle('on', notifEnabled);
+  toast(notifEnabled ? '🔔 Lembretes ativados!' : '🔕 Lembretes desativados');
+}
+
+function toggleTime(t) {
+  if (selectedTimes.includes(t)) {
+    if (selectedTimes.length<=1) { toast('Você precisa de pelo menos 1 lembrete!'); return; }
+    selectedTimes = selectedTimes.filter(x=>x!==t);
+  } else {
+    if (selectedTimes.length>=3) { toast('Máximo de 3 lembretes permitidos'); return; }
+    selectedTimes.push(t); selectedTimes.sort();
+  }
+  renderTimePicker();
+  toast(`⏰ Lembretes: ${selectedTimes.join(', ')}`);
+}
+
+// ── Premium ───────────────────────────────────────────────────────────────
+function selectPlan(plan) {
+  selectedPlan = plan;
+  document.getElementById('plan-yearly').classList.toggle('selected', plan==='yearly');
+  document.getElementById('plan-lifetime').classList.toggle('selected', plan==='lifetime');
+  const btn = document.getElementById('purchase-btn');
+  btn.textContent = plan==='yearly' ? '✦ Começar Premium — R$ 19,99/ano' : '✦ Acesso Vitalício — R$ 99,00';
+}
+
+function handlePurchase() {
+  const btn = document.getElementById('purchase-btn');
+  btn.textContent = '⏳ Processando…'; btn.disabled = true;
+  setTimeout(() => {
+    btn.disabled = false; selectPlan(selectedPlan);
+    toast('🎉 Bem-vinda(o) ao Premium! Todos os recursos desbloqueados!');
+    document.getElementById('premium-cats').innerHTML = CATS.filter(c=>c.premium).slice(0,6).map(c=>catCard(c,false)).join('');
+    renderAllCats();
+    setTimeout(() => showTab('home'), 1600);
+  }, 1800);
+}
+
+function closePremium() { showTab(prevTab==='premium'?'home':prevTab); }
+
+function shareAff() {
+  const text = getAff(playerCat, playerIndex);
+  if (navigator.share) {
+    navigator.share({ title:'Pensamentos de Ouro', text:`"${text}" — Pensamentos de Ouro ✨` }).catch(()=>{});
+  } else {
+    navigator.clipboard?.writeText(`"${text}" — Pensamentos de Ouro ✨`);
+    toast('📋 Copiado para a área de transferência!');
+  }
+}
+
+// ── Toast ─────────────────────────────────────────────────────────────────
+let toastTimer = null;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+init();
+</script>
+</body>
+</html>
