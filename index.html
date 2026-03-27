@@ -374,6 +374,104 @@
   @keyframes fadeInUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
   @keyframes speakPulse { 0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.5)} 50%{box-shadow:0 0 0 12px rgba(255,255,255,0)} }
   .speaking { animation:speakPulse 1.2s ease-in-out infinite; }
+
+  /* ─── SCROLL & TAP FIXES ───────────────────────────── */
+  html, body { height: 100%; overflow: hidden; }
+  .screen { -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+  .cat-card, .ctrl-btn, .blur-btn, .btn-ghost, .btn-white,
+  .tab-btn, .settings-row, .plan-card, .theme-chip, .time-chip,
+  .unlock-link, .close-btn, .purchase-btn, .restore-link {
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+
+  /* ─── ONBOARDING ──────────────────────────────────── */
+  #onboarding {
+    background: linear-gradient(145deg, #F6B93B, #e58e26, #c0392b);
+    display: flex; flex-direction: column;
+  }
+  .ob-bg { position:absolute;inset:0;pointer-events:none;overflow:hidden; }
+  .ob-orb1 { position:absolute;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.12);top:-80px;right:-60px;animation:orbFloat1 6s ease-in-out infinite; }
+  .ob-orb2 { position:absolute;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.1);bottom:-50px;left:-40px;animation:orbFloat2 8s ease-in-out infinite; }
+
+  .ob-container {
+    flex: 1; display: flex; flex-direction: column;
+    padding: 80px 28px 32px;
+    position: relative; z-index: 2;
+    overflow-y: auto; -webkit-overflow-scrolling: touch;
+  }
+
+  .ob-progress { display:flex; gap:6px; margin-bottom:32px; }
+  .ob-dot { flex:1;height:4px;border-radius:2px;background:rgba(255,255,255,.28);transition:background .35s; }
+  .ob-dot.done { background:rgba(255,255,255,.92); }
+
+  .ob-step { display:none; }
+  .ob-step.active { display:block; }
+  @keyframes obSlideInR  { from{opacity:0;transform:translateX(36px)} to{opacity:1;transform:translateX(0)} }
+  @keyframes obSlideInL  { from{opacity:0;transform:translateX(-36px)} to{opacity:1;transform:translateX(0)} }
+  .ob-slide-r { animation:obSlideInR .26s ease both; }
+  .ob-slide-l { animation:obSlideInL .26s ease both; }
+
+  .ob-q  { color:#fff;font-size:26px;font-weight:900;line-height:1.3;margin-bottom:6px; }
+  .ob-sub{ color:rgba(255,255,255,.72);font-size:14px;margin-bottom:28px; }
+
+  .ob-input {
+    background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.5);
+    border-radius:16px;padding:16px 20px;font-size:18px;color:#fff;
+    width:100%;outline:none;font-family:inherit;-webkit-appearance:none;
+    caret-color:#fff;
+  }
+  .ob-input::placeholder { color:rgba(255,255,255,.5); }
+  .ob-input:focus { background:rgba(255,255,255,.28);border-color:rgba(255,255,255,.85); }
+
+  .ob-chips { display:flex;flex-wrap:wrap;gap:10px; }
+  .ob-chip {
+    padding:11px 20px;border-radius:50px;
+    background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.38);
+    color:#fff;font-size:14px;font-weight:600;cursor:pointer;
+    transition:all .18s;user-select:none;-webkit-tap-highlight-color:transparent;
+  }
+  .ob-chip:hover  { background:rgba(255,255,255,.28); }
+  .ob-chip:active { transform:scale(.95); }
+  .ob-chip.sel { background:rgba(255,255,255,.92);color:#c0392b;border-color:transparent; }
+
+  .ob-zodiac { display:grid;grid-template-columns:repeat(3,1fr);gap:10px; }
+  .ob-sign {
+    display:flex;flex-direction:column;align-items:center;gap:4px;
+    padding:12px 6px;border-radius:16px;
+    background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.3);
+    color:#fff;cursor:pointer;transition:all .18s;
+    user-select:none;-webkit-tap-highlight-color:transparent;
+  }
+  .ob-sign:hover  { background:rgba(255,255,255,.24); }
+  .ob-sign:active { transform:scale(.94); }
+  .ob-sign.sel    { background:rgba(255,255,255,.92);color:#c0392b;border-color:transparent; }
+  .ob-sign .sz { font-size:24px; }
+  .ob-sign .sn { font-size:10px;font-weight:700;letter-spacing:.3px;text-align:center; }
+
+  .ob-btn {
+    background:rgba(255,255,255,.9);color:#c0392b;border:none;border-radius:50px;
+    padding:15px 32px;font-size:16px;font-weight:800;cursor:pointer;
+    width:100%;margin-top:28px;transition:all .2s;font-family:inherit;
+    box-shadow:0 4px 20px rgba(0,0,0,.14);user-select:none;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .ob-btn:hover   { background:#fff;transform:scale(1.02); }
+  .ob-btn:active  { transform:scale(.98); }
+  .ob-btn:disabled{ opacity:.4;cursor:not-allowed;transform:none; }
+
+  .ob-back {
+    background:none;border:none;color:rgba(255,255,255,.65);
+    font-size:13px;font-weight:600;cursor:pointer;
+    margin-top:12px;padding:8px;text-align:center;
+    width:100%;font-family:inherit;transition:color .2s;
+  }
+  .ob-back:hover { color:#fff; }
+
+  /* ─── COPYRIGHT FOOTER ─────────────────────────────── */
+  .cr { text-align:center;padding:10px 16px 18px;font-size:10px;font-weight:500;
+        color:rgba(0,0,0,.28);letter-spacing:.3px;pointer-events:none;user-select:none; }
+  .cr.light { color:rgba(255,255,255,.38); }
 </style>
 </head>
 <body>
@@ -381,8 +479,95 @@
 
   <div class="screens">
 
+    <!-- ══════════════ ONBOARDING ══════════════ -->
+    <div class="screen active" id="onboarding">
+      <div class="ob-bg"><div class="ob-orb1"></div><div class="ob-orb2"></div></div>
+      <div class="status-bar"><span>9:41</span><span>●●● 100%</span></div>
+      <div class="ob-container">
+
+        <!-- Progress dots -->
+        <div class="ob-progress">
+          <div class="ob-dot" id="od0"></div>
+          <div class="ob-dot" id="od1"></div>
+          <div class="ob-dot" id="od2"></div>
+          <div class="ob-dot" id="od3"></div>
+          <div class="ob-dot" id="od4"></div>
+        </div>
+
+        <!-- Step 0 — Nome -->
+        <div class="ob-step" id="ob-step-0">
+          <p class="ob-q">Qual é o seu nome?</p>
+          <p class="ob-sub">Vamos personalizar sua experiência ✨</p>
+          <input class="ob-input" id="ob-name" type="text" placeholder="Digite seu nome..." autocomplete="off" oninput="obCheckName()"/>
+          <button class="ob-btn" id="ob-btn-0" disabled onclick="obContinue()">Continuar →</button>
+        </div>
+
+        <!-- Step 1 — Idade -->
+        <div class="ob-step" id="ob-step-1">
+          <p class="ob-q">Qual é a sua idade?</p>
+          <p class="ob-sub">Adaptamos o conteúdo para você 💛</p>
+          <div class="ob-chips">
+            <div class="ob-chip" onclick="obSelect(this,'age')">18–24</div>
+            <div class="ob-chip" onclick="obSelect(this,'age')">25–34</div>
+            <div class="ob-chip" onclick="obSelect(this,'age')">35–44</div>
+            <div class="ob-chip" onclick="obSelect(this,'age')">45–54</div>
+            <div class="ob-chip" onclick="obSelect(this,'age')">55–64</div>
+            <div class="ob-chip" onclick="obSelect(this,'age')">65+</div>
+          </div>
+        </div>
+
+        <!-- Step 2 — Gênero -->
+        <div class="ob-step" id="ob-step-2">
+          <p class="ob-q">Qual é o seu gênero?</p>
+          <p class="ob-sub">Usamos para personalizar as afirmações 🌸</p>
+          <div class="ob-chips">
+            <div class="ob-chip" onclick="obSelect(this,'gender')">Feminino</div>
+            <div class="ob-chip" onclick="obSelect(this,'gender')">Masculino</div>
+            <div class="ob-chip" onclick="obSelect(this,'gender')">Não-binário</div>
+            <div class="ob-chip" onclick="obSelect(this,'gender')">Prefiro não dizer</div>
+          </div>
+        </div>
+
+        <!-- Step 3 — Signo -->
+        <div class="ob-step" id="ob-step-3">
+          <p class="ob-q">Qual é o seu signo?</p>
+          <p class="ob-sub">Afirmações alinhadas com sua energia 🔮</p>
+          <div class="ob-zodiac">
+            <div class="ob-sign" onclick="obSelect(this,'zodiac')"><span class="sz">♈</span><span class="sn">Áries</span></div>
+            <div class="ob-sign" onclick="obSelect(this,'zodiac')"><span class="sz">♉</span><span class="sn">Touro</span></div>
+            <div class="ob-sign" onclick="obSelect(this,'zodiac')"><span class="sz">♊</span><span class="sn">Gêmeos</span></div>
+            <div class="ob-sign" onclick="obSelect(this,'zodiac')"><span class="sz">♋</span><span class="sn">Câncer</span></div>
+            <div class="ob-sign" onclick="obSelect(this,'zodiac')"><span class="sz">♌</span><span class="sn">Leão</span></div>
+            <div class="ob-sign" onclick="obSelect(this,'zodiac')"><span class="sz">♍</span><span class="sn">Virgem</span></div>
+            <div class="ob-sign" onclick="obSelect(this,'zodiac')"><span class="sz">♎</span><span class="sn">Libra</span></div>
+            <div class="ob-sign" onclick="obSelect(this,'zodiac')"><span class="sz">♏</span><span class="sn">Escorpião</span></div>
+            <div class="ob-sign" onclick="obSelect(this,'zodiac')"><span class="sz">♐</span><span class="sn">Sagitário</span></div>
+            <div class="ob-sign" onclick="obSelect(this,'zodiac')"><span class="sz">♑</span><span class="sn">Capricórnio</span></div>
+            <div class="ob-sign" onclick="obSelect(this,'zodiac')"><span class="sz">♒</span><span class="sn">Aquário</span></div>
+            <div class="ob-sign" onclick="obSelect(this,'zodiac')"><span class="sz">♓</span><span class="sn">Peixes</span></div>
+          </div>
+        </div>
+
+        <!-- Step 4 — Religioso -->
+        <div class="ob-step" id="ob-step-4">
+          <p class="ob-q">Você se considera religioso(a)?</p>
+          <p class="ob-sub">Personalizamos conteúdo espiritual para você 🙏</p>
+          <div class="ob-chips">
+            <div class="ob-chip" onclick="obSelect(this,'rel')">Sim, muito</div>
+            <div class="ob-chip" onclick="obSelect(this,'rel')">Um pouco</div>
+            <div class="ob-chip" onclick="obSelect(this,'rel')">Não, mas espiritualizado(a)</div>
+            <div class="ob-chip" onclick="obSelect(this,'rel')">Não sou religioso(a)</div>
+          </div>
+        </div>
+
+        <button class="ob-back" id="ob-back" style="display:none" onclick="obGoBack()">← Voltar</button>
+
+        <div class="cr light">Copyrights by Elaine Ourives</div>
+      </div>
+    </div>
+
     <!-- ══════════════ HOME ══════════════ -->
-    <div class="screen active" id="home">
+    <div class="screen" id="home">
       <div class="status-bar"><span>9:41</span><span>●●● 100%</span></div>
       <div class="hero">
         <p class="hero-app-name">✦ Pensamentos de Ouro</p>
@@ -429,6 +614,7 @@
           <button class="btn-white" onclick="showTab('premium')">Começar Premium — R$19,99/ano</button>
         </div>
       </div>
+      <div class="cr">Copyrights by Elaine Ourives</div>
     </div>
 
     <!-- ══════════════ CATEGORIES ══════════════ -->
@@ -443,6 +629,7 @@
         </div>
       </div>
       <div class="cats-grid" id="all-cats"></div>
+      <div class="cr">Copyrights by Elaine Ourives</div>
     </div>
 
     <!-- ══════════════ PLAYER ══════════════ -->
@@ -476,6 +663,7 @@
         <div class="ctrl-btn" onclick="nextAff()">⏭</div>
         <div class="ctrl-btn" id="timer-btn" onclick="toggleTimer()">⏱</div>
       </div>
+      <div class="cr light">Copyrights by Elaine Ourives</div>
     </div>
 
     <!-- ══════════════ SETTINGS ══════════════ -->
@@ -531,6 +719,7 @@
           </div>
         </div>
       </div>
+      <div class="cr">Copyrights by Elaine Ourives</div>
     </div>
 
     <!-- ══════════════ PREMIUM ══════════════ -->
@@ -574,13 +763,14 @@
         <button class="purchase-btn" id="purchase-btn" onclick="handlePurchase()">✦ Começar Premium — R$ 19,99/ano</button>
         <a class="restore-link" onclick="toast('Verificando compras anteriores…')">Restaurar compras anteriores</a>
         <p class="legal">O pagamento é debitado da sua conta. A assinatura é renovada automaticamente, salvo cancelamento com pelo menos 24h de antecedência. Preços em BRL.</p>
+        <div class="cr">Copyrights by Elaine Ourives</div>
       </div>
     </div>
 
   </div><!-- /screens -->
 
   <!-- Tab Bar -->
-  <div class="tab-bar">
+  <div class="tab-bar" id="tab-bar" style="display:none">
     <button class="tab-btn active" onclick="showTab('home')" id="tab-home">
       <div class="tab-icon">🏠</div>
       <div class="tab-label">Início</div>
@@ -756,7 +946,7 @@ const PERKS = [
 ];
 
 // ── Estado ────────────────────────────────────────────────────────────────
-let currentTab = 'home';
+let currentTab = 'onboarding';
 let prevTab = 'home';
 let playerCat = null;
 let playerIndex = 0;
@@ -779,6 +969,74 @@ function init() {
   renderThemes();
   renderTimePicker();
   renderPerks();
+  obInit();
+}
+
+// ── Onboarding ────────────────────────────────────────────────────────────
+let obStep = 0;
+const OB_STEPS = 5;
+const obData = { name:'', age:'', gender:'', zodiac:'', rel:'' };
+
+function obInit() {
+  obStep = 0;
+  obShowStep(0, 'r');
+  obUpdateDots();
+}
+
+function obUpdateDots() {
+  for (let i = 0; i < OB_STEPS; i++) {
+    document.getElementById('od'+i).classList.toggle('done', i <= obStep);
+  }
+}
+
+function obShowStep(n, dir) {
+  document.querySelectorAll('.ob-step').forEach(s => s.classList.remove('active','ob-slide-r','ob-slide-l'));
+  const el = document.getElementById('ob-step-'+n);
+  el.classList.add('active', dir==='r' ? 'ob-slide-r' : 'ob-slide-l');
+  document.getElementById('ob-back').style.display = n === 0 ? 'none' : 'block';
+  if (n === 0) {
+    setTimeout(() => document.getElementById('ob-name').focus(), 300);
+  }
+}
+
+function obCheckName() {
+  const val = document.getElementById('ob-name').value.trim();
+  document.getElementById('ob-btn-0').disabled = val.length < 2;
+}
+
+function obSelect(el, field) {
+  // deselect siblings in same group
+  el.parentElement.querySelectorAll('[onclick*="obSelect"]').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+  obData[field] = el.textContent.trim();
+  setTimeout(() => obContinue(), 300);
+}
+
+function obContinue() {
+  if (obStep === 0) {
+    const val = document.getElementById('ob-name').value.trim();
+    if (val.length < 2) return;
+    obData.name = val;
+  }
+  if (obStep < OB_STEPS - 1) {
+    obStep++;
+    obUpdateDots();
+    obShowStep(obStep, 'r');
+  } else {
+    obFinish();
+  }
+}
+
+function obGoBack() {
+  if (obStep === 0) return;
+  obStep--;
+  obUpdateDots();
+  obShowStep(obStep, 'l');
+}
+
+function obFinish() {
+  document.getElementById('tab-bar').style.display = 'flex';
+  showTab('home');
 }
 
 const GRAD_MAP = {
@@ -842,9 +1100,9 @@ function renderPerks() {
 function showTab(tab) {
   const prev = document.getElementById(currentTab);
   const next = document.getElementById(tab);
-  if (!next) return;
+  if (!next || currentTab === tab) return;
   prev.classList.remove('active'); prev.classList.add('slide-left');
-  setTimeout(() => prev.classList.remove('slide-left'), 300);
+  setTimeout(() => { prev.classList.remove('slide-left'); prev.scrollTop = 0; }, 320);
   next.classList.add('active');
   currentTab = tab;
   ['home','categories','settings'].forEach(t => {
